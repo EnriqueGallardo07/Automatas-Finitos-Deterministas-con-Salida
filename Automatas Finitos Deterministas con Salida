@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string mooreAutomata(const string &input) {
+    string output;
+    int state = 0; // Estado inicial
+
+    for (size_t i = 0; i < input.length(); ++i) {
+        char ch = input[i];
+        switch (state) {
+            case 0: // Estado q0
+                if (ch == '1') {
+                    state = 1;
+                    output += '0'; // Parte de la secuencia reemplazada
+                } else {
+                    output += ch; // Si es '0', se agrega tal cual
+                }
+                break;
+
+            case 1: // Estado q1
+                if (ch == '1') {
+                    state = 0; // Volver al estado inicial
+                    output[output.length() - 1] = '0'; // Reemplaza el '1' anterior por '0'
+                    output += '0';                    // Añade el segundo '0'
+                } else {
+                    output += ch; // Si es '0', se agrega tal cual
+                    state = 0;    // Volver al estado inicial
+                }
+                break;
+        }
+    }
+
+    return output;
+}
+
+int main() {
+    string input;
+    cout << "Ingrese la secuencia de 1s y 0s: ";
+    cin >> input;
+
+    string result = mooreAutomata(input);
+    cout << "Secuencia transformada: " << result << endl;
+
+    return 0;
+}
